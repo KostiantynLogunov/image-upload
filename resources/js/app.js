@@ -18,9 +18,12 @@ window.Vue = require('vue');
  */
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('custom-avatar-editor', require('./components/vue-avatar'));
 // Vue.component('upload-form', require('./components/UploadForm.vue'));
 // or
 import UploadForm from './components/UploadForm'
+import SaveImage from './components/SaveImage'
+import VueAvatar from './components/vue-avatar'
 
 
 // const files = require.context('./', true, /\.vue$/i)
@@ -34,8 +37,11 @@ import UploadForm from './components/UploadForm'
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+import Toasted from 'vue-toasted';
+
+Vue.use(Toasted);
 
 const app = new Vue({
     el: '#app',
-    components: {UploadForm}
+    components: {UploadForm, SaveImage}
 });

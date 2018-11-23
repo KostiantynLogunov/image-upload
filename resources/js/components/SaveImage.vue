@@ -10,14 +10,13 @@
 <script>
 
     export default {
-        name: "UploadForm",
-
         props: ['user'],
 
         data(){
             return {
-                avatar: this.user.avatar,
+                avatar: `storage/${this.user.image}`,
                 loaded: false,
+                file: null
             }
         },
 
@@ -25,7 +24,9 @@
             GetImage(e) {
                 let image = e.target.files[0];
                 this.read(image);
-
+                let form = new FormData();
+                form.append('image', image);
+                this.file = form
             },
 
             cancel(){
@@ -34,12 +35,23 @@
             },
             upload()
             {
-                axios.post('/upload', {'image': this.avatar})
-                    .then(res => this.$toasted.show('Avatar is uploaded ! YPA',
-                        { type: 'success'})
-                    )
+                axios.post('/saveImage', this.file)
+                    .then(res =>
+                    {
+                        this.$toasted.show('Avatar is uploaded ! YPA',
+                        { type: 'success'});
+                        this.loaded = false;
+                    })
             },
-
+            read(image){
+                let reader = new FileReader();
+                reader.readAsDataURL(image);
+                reader.onload = e => {
+                    // console.log(e)
+                    this.avatar = e.target.result;
+                };
+                this.loaded = true;
+            }
         }
     }
 </script>
